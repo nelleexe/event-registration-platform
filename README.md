@@ -1,2 +1,2 @@
 # event-registration-platform
-Online platform for registering participants for university events
+Онлайн платформа для регистрации студентов на университетские мероприятия
