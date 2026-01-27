@@ -1,0 +1,20 @@
+{% load static %}
+<header>
+    <section class="container nav-container">
+        <a href="/" class="logo-box">
+            <img src="{% static 'images/logo.png' %}" alt="АЮТ" class="logo-img">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/" class="active">Главная</a></li>
+                {% if not user.is_authenticated %}
+                <li><a href="/login/">Вход</a></li>
+                <li><a href="/register/">Регистрация</a></li>
+                {% else %}
+                <li><a href="/profile/">Профиль</a></li>
+                <li><a href="/logout/">Выход</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </section>
+</header>

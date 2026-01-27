@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- авторизация -->
+<section class="auth-container">
+    <header class="auth-header">
+        <h1 style="font-size: 32px; margin-bottom: 8px;">Добро пожаловать</h1>
+        <p style="color: var(--text-muted);">Войдите или создайте аккаунт для записи</p>
+    </header>
+    
+    <nav class="auth-tabs">
+        <a href="/login/" class="auth-tab">Вход</a>
+        <a href="/register/" class="auth-tab active">Регистрация</a>
+    </nav>
+    <!-- поля заполн -->
+    <section class="form-card">
+        <form method="post">
+            {% csrf_token %}
+            <article class="form-group">
+                <label for="id_surname">Фамилия:</label>
+                <input type="text" name="surname" autocapitalize="on" autocomplete="surname" maxlength="200" placeholder="Введите Вашу фамилию" required="" id="id_surname">
+            </article>
+            <article class="form-group">
+                <label for="id_name">Имя:</label>
+                <input type="text" name="name" autocapitalize="on" autocomplete="name" maxlength="200" placeholder="Введите Ваше имя" required="" id="id_name">
+            </article>
+            <article class="form-group">
+                <label for="id_patronymic">Отчество:</label>
+                <input type="text" name="patronymic" autocapitalize="on" autocomplete="patronymic" maxlength="200" placeholder="Введите Ваше отчество" required="" id="id_patronymic">
+            </article>
+            <article class="form-group">
+                <label for="id_phone">Номер телефона:</label>
+                <input type="phone" name="phone" autocomplete="phone" placeholder="Введите Ваш номер телефона" required="" id="id_phone">
+            </article>
+            <article class="form-group">
+                <label for="id_email">Адрес электронной почты:</label>
+                <input type="email" name="email" autocomplete="email" placeholder="Введите Ваш адрес электронной почты" required="" id="id_email">
+            </article>
+            <article class="form-group">
+                <label for="id_password1">Пароль:</label>
+                <input type="password" name="password1" autocomplete="current-password" placeholder="Введите Ваш пароль" required="" id="id_password1">
+            </article>
+            <article class="form-group">
+                <label for="id_password2">Пароль (ещё раз):</label>
+                <input type="password" name="password2" autocomplete="current-password" placeholder="Введите Ваш пароль ещё раз" required="" id="id_password2">
+            </article>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Войти</button>
+        </form>
+    </section>
+</section>
+{% endblock %}

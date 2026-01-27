@@ -2,66 +2,31 @@
 {% load static %}
 
 {% block content %}
-<header>
-    <section class="container nav-container">
-        <a href="index.html" class="logo-box">
-            <img src="{% static 'images/logo.png' %}" alt="АЮТ" class="logo-img">
-        </a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Главная</a></li>
-                <li><a href="register.html" class="active">Записаться</a></li>
-                <li><a href="profile.html">Профиль</a></li>
-            </ul>
-        </nav>
+<!-- авторизация -->
+<section class="auth-container">
+    <header class="auth-header">
+        <h1 style="font-size: 32px; margin-bottom: 8px;">Добро пожаловать</h1>
+        <p style="color: var(--text-muted);">Войдите или создайте аккаунт для записи</p>
+    </header>
+    
+    <nav class="auth-tabs">
+        <a href="/login/" class="auth-tab active">Вход</a>
+        <a href="/register/" class="auth-tab">Регистрация</a>
+    </nav>
+    <!-- поля заполн -->
+    <section class="form-card">
+        <form method="post">
+            {% csrf_token %}
+            <article class="form-group">
+                <label for="id_username">Электронная почта:</label>
+                <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="254" placeholder="Введите вашу электронную почту" required="" id="id_username">
+            </article>
+            <article class="form-group">
+                <label for="id_password">Пароль:</label>
+                <input type="password" name="password" autocomplete="current-password" placeholder="Введите ваш пароль" required="" id="id_password">
+            </article>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Войти</button>
+        </form>
     </section>
-</header>
-
-<main class="container">
-    <!-- авторизация -->
-    <section class="auth-container">
-        <header class="auth-header">
-            <h1 style="font-size: 32px; margin-bottom: 8px;">Добро пожаловать</h1>
-            <p style="color: var(--text-muted);">Войдите или создайте аккаунт для записи</p>
-        </header>
-        
-        <nav class="auth-tabs">
-            <a href="/login/" class="auth-tab active">Вход</a>
-            <a href="/register/" class="auth-tab">Регистрация</a>
-        </nav>
-
-        <!-- поля заполн -->
-        <section class="form-card">
-            <form method="post">
-                {% csrf_token %}
-                <article class="form-group">
-                    <label for="id_username">Электронная почта:</label>
-                    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="254" placeholder="Введите вашу электронную почту" required="" id="id_username">
-                </article>
-                <article class="form-group">
-                    <label for="id_password">Пароль:</label>
-                    <input type="password" name="password" autocomplete="current-password" placeholder="Введите ваш пароль" required="" id="id_password">
-                </article>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Войти</button>
-            </form>
-        </section>
-    </section>
-</main>
-
-<footer>
-    <section class="container footer-content">
-        <article class="footer-brand">
-            <p>© 2026 АКАДЕМИЯ ЮНЫХ ТАЛАНТОВ</p>
-        </article>
-        <article class="footer-links">
-            <a href="#">Контакты</a>
-            <a href="#">О нас</a>
-            <a href="#">Помощь</a>
-        </article>
-    </section>
-</footer>
-
-<script>
-    lucide.createIcons();
-</script>
+</section>
 {% endblock %}

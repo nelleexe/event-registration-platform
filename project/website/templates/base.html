@@ -10,7 +10,11 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    {% include 'inc/_header.html' %}
+    <main class='container'>
+        {% block content %} 
+        {% endblock %}
+    </main>
+    {% include 'inc/_footer.html' %}
 </body>
 </html>

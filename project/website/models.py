@@ -24,11 +24,11 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField('Электронная почта', unique=True)
     surname = models.CharField('Фамилия', max_length=200)
     name = models.CharField('Имя', max_length=200)
     patronymic = models.CharField('Отчество', max_length=200)
     phone = PhoneField('Номер телефона', unique=True)
+    email = models.EmailField('Электронная почта', unique=True)
     password = models.CharField('Пароль', max_length=88)
 
     is_active = models.BooleanField(default=True)

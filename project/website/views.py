@@ -22,3 +22,19 @@ def login_view(request):
     }
 
     return render(request, 'registration/login.html', data)
+
+def register_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('/') #profile
+    else:
+        form = CustomUserCreationForm()
+
+    data = {
+        'form': form
+    }
+
+    return render(request, 'registration/register.html', data)
