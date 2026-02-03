@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from .models import *
@@ -37,4 +38,17 @@ class CustomUserCreationForm(UserCreationForm):
             'patronymic': _('Отчество'),
             'phone': _('Номер телефона'),
             'email': _('Электронная почта')
+        }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('surname', 'name', 'patronymic', 'phone', 'email', 'photo')
+        widgets = {
+            'surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'patronymic': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
         }

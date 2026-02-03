@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth import login, logout
+from django.contrib import messages
 
 
 
@@ -57,7 +58,24 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    data = {
+    user = request.user
+    if request.method == 'POST':
+        if 'remove_photo' in request.POST:
+            if user.photo:
+                user.photo.delete(save=False)
+                user.photo = None
+                user.save()
+                messages.success(request, 'Фото удалено')
 
-    }
-    return render(request, "profile.html", data)
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Профиль сохранён')
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме')
+    
+    else:
+        form = ProfileForm(instance=user)
+    
+
+    return render(request, "profile.html", {'form': form, 'user_obj': user})

@@ -3,5 +3,100 @@
 {% load static %}
 
 {% block content %}
+<form id="profileForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
+    <div>
+        <h3>Фото профиля</h3>
+        {% if user_obj.photo %}
+            <img id="avatarPreview" src="{{ user_obj.photo.url }}" alt="Фото пользователя" width="150">
+        {% else %}
+            <img id="avatarPreview" src="{% static 'images/default_avatar.jpg' %}" alt="Фото пользователя" width="150">
+        {% endif %}
+        <br><br>
+
+        <label>
+            Изменить фото:
+            <input id="photoInput" type="file" name="photo" accept="image/*">
+        </label>
+
+        {% if user_obj.photo %}
+            <button type="submit" name="remove_photo">Удалить фото</button>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <div>
+        <label>Фамилия:</label><br>
+        {{ form.surname }}<br><br>
+
+        <label>Имя:</label><br>
+        {{ form.name }}<br><br>
+
+        <label>Отчество:</label><br>
+        {{ form.patronymic }}<br><br>
+
+        <label>Телефон:</label><br>
+        {{ form.phone }}<br><br>
+
+        <label>Email:</label><br>
+        {{ form.email }}<br><br>
+    </div>
+
+    <div>
+        <button type="button" id="editBtn">Редактировать</button>
+        <button type="submit" id="saveBtn" style="display:none;">Сохранить</button>
+        <button type="button" id="cancelBtn" style="display:none;">Отменить</button>
+    </div>
+</form>
+
+<br>
+<a href="{% url 'password_change' %}">Сменить пароль</a>
+
+<script>
+    const form = document.getElementById('profileForm');
+    const editBtn = document.getElementById('editBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const photoInput = document.getElementById('photoInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    // Все редактируемые поля
+    const inputs = Array.from(form.querySelectorAll('input, textarea, select'))
+        .filter(i => i.name && i.type !== 'hidden' && i.type !== 'file');
+
+    function setDisabled(state) {
+        inputs.forEach(i => i.disabled = state);
+    }
+
+    // По умолчанию форма заблокирована
+    setDisabled(true);
+
+    editBtn.addEventListener('click', () => {
+        setDisabled(false);
+
+        // email можно оставить только для чтения
+        const emailInput = form.querySelector('input[type="email"]');
+        if (emailInput) emailInput.readOnly = true;
+
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'inline';
+        cancelBtn.style.display = 'inline';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        location.reload();
+    });
+
+    // Превью выбранного изображения
+    photoInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = e => avatarPreview.src = e.target.result;
+        reader.readAsDataURL(file);
+    });
+</script>
 {% endblock %}
