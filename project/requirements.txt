@@ -1,0 +1,6 @@
+asgiref==3.11.1
+Django==6.0.2
+django-phone-field==1.8.1
+pillow==12.1.0
+sqlparse==0.5.5
+tzdata==2025.3
