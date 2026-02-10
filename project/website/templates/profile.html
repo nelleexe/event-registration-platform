@@ -15,32 +15,37 @@
         {% endif %}
         <br><br>
 
-        <label>
-            Изменить фото:
-            <input id="photoInput" type="file" name="photo" accept="image/*">
-        </label>
 
-        {% if user_obj.photo %}
-            <button type="submit" name="remove_photo">Удалить фото</button>
-        {% endif %}
+
+        <div class="photo-actions">
+            <input id="photoInput" type="file" name="photo" accept="image/*" hidden>
+            <label for="photoInput" class="btn btn-primary file-btn">
+            Изменить фото
+            </label>
+            {% if user_obj.photo %}
+                <button type="button" class="btn file-btn-secondary">
+                    Удалить фото
+                </button>
+            {% endif %}
+        </div>
     </div>
 
     <hr>
 
     <div>
-        <label>Фамилия:</label><br>
+        <label>Фамилия:</label>
         {{ form.surname }}<br><br>
 
-        <label>Имя:</label><br>
+        <label>Имя:</label>
         {{ form.name }}<br><br>
 
-        <label>Отчество:</label><br>
+        <label>Отчество:</label>
         {{ form.patronymic }}<br><br>
 
-        <label>Телефон:</label><br>
+        <label>Телефон:</label>
         {{ form.phone }}<br><br>
 
-        <label>Email:</label><br>
+        <label>Email:</label>
         {{ form.email }}<br><br>
     </div>
 
@@ -48,11 +53,9 @@
         <button type="button" id="editBtn">Редактировать</button>
         <button type="submit" id="saveBtn" style="display:none;">Сохранить</button>
         <button type="button" id="cancelBtn" style="display:none;">Отменить</button>
+        <a href="{% url 'password_change' %}" type="button" id="editBtn">Сменить пароль</a>
     </div>
 </form>
-
-<br>
-<a href="{% url 'password_change' %}">Сменить пароль</a>
 
 <script>
     const form = document.getElementById('profileForm');

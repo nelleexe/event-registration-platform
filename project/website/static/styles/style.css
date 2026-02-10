@@ -485,3 +485,198 @@ footer {
   .hero h1 { font-size: 32px; }
   .profile-card { flex-direction: column; text-align: center; }
 }
+
+/* профиль*/
+
+#profileForm {
+  max-width: 720px;
+  margin: 48px auto 80px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 40px;
+  box-shadow: var(--shadow);
+}
+
+#profileForm > div:first-of-type {
+  text-align: center;
+  padding-bottom: 28px;
+}
+
+#profileForm h3 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  color: #1e293b;
+}
+
+#avatarPreview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid white;
+  box-shadow: var(--shadow);
+  background: #e2e8f0;
+}
+
+/* выбор фота */
+.photo-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.photo-actions .btn {
+  width: 200px;
+  height: 48px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-btn {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.file-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+/* -------- */
+
+#profileForm hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+#profileForm label{
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+  background: white;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,102,204,0.08);
+}
+
+.form-control:disabled {
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.form-control[readonly] {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+#profileForm > div:last-of-type {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+#profileForm button {
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#profileForm a {
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+#editBtn {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
+
+#editBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+#saveBtn {
+  background: var(--secondary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 168, 89, 0.25);
+}
+
+#saveBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+#cancelBtn {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+#cancelBtn:hover {
+  background: #cbd5e1;
+}
+
+main.container > a {
+  display: inline-block;
+  margin-top: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--primary);
+}
+
+main.container > a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  #profileForm {
+    padding: 24px 20px;
+  }
+
+  #profileForm > div:last-of-type {
+    flex-direction: column;
+  }
+
+  #profileForm button {
+    width: 100%;
+  }
+}
