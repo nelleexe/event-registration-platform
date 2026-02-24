@@ -19,11 +19,9 @@ def login_view(request):
             return redirect('/')
     else:
         form = CustomAuthenticationForm()
-    
     data = {
         'form': form
     }
-
     return render(request, 'registration/login.html', data)
 
 def register_view(request):
@@ -37,11 +35,9 @@ def register_view(request):
             return redirect('/profile/')
     else:
         form = CustomUserCreationForm()
-
     data = {
         'form': form
     }
-
     return render(request, 'registration/register.html', data)
 
 def login_required(view):
@@ -67,17 +63,14 @@ def profile_view(request):
                 user.photo = None
                 user.save()
                 messages.success(request, 'Фото удалено')
-
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Профиль сохранён')
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибки в форме')
-    
     else:
         form = ProfileForm(instance=user)
-    
     return render(request, "profile.html", {'form': form, 'user_obj': user})
 
 @login_required
@@ -87,14 +80,22 @@ def events_view(request):
         event_id = request.POST.get('event-id')
         try:
             event = Event.objects.get(id=event_id)
-            EventMember(user=user, event=event).save()
+            members = [enrollment.user for enrollment in EventMember.objects.filter(event=event)]
+            if user not in members:
+                if len(members) < event.capacity:
+                    EventMember(user=user, event=event).save()
+                    return redirect('/profile/')
+                else:
+                    return HttpResponseForbidden('К сожалению, в момент отправки запроса, свободных мест на меропрятие уже не осталось')
+            else:
+                return HttpResponseForbidden('Вы уже являетесь участником данного мероприятия')
         except:
             return HttpResponseForbidden('Не удалось записаться на мероприятие')
+
     data = {
         'events': Event.objects.all(),
         'shedule': Schedule.objects.all()
     }
-    
     return render(request, 'events.html', data)
 
 @login_required
@@ -102,7 +103,6 @@ def clubs_view(request):
     data = {
         'clubs': Club.objects.all(),
         'shedule': Schedule.objects.all()
-
     }
     return render(request, 'clubs.html', data)
 

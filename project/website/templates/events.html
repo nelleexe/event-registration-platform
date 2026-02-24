@@ -17,11 +17,20 @@
         <h2>{{ event.name }}</h2>
         <p>{{ event.description }}</p>
         <p>Участников: {{ event|get_members_count }} из {{ event.capacity }}</p>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="event-id" value="{{ event.id }}">
-            <button type="submit">Записаться</button>
-        </form>
+        {% if user not in event|get_members %}
+            {% if event|get_members_count < event.capacity %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="event-id" value="{{ event.id }}">
+                <button type="submit">Записаться</button>
+            </form>
+            {% else %}
+            <p>К сожалению, на данный момент, свободных мест нет</p>
+            {% endif %}
+        {% else %}
+        <p>Вы являетесь участником!</p>
+        <a href="/profile/">Отменить запись в профиле</a>
+        {% endif %}
     </article>
     {% endfor %}
 </section>
