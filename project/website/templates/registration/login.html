@@ -2,18 +2,17 @@
 {% load static %}
 
 {% block content %}
-<!-- авторизация -->
 <section class="auth-container">
     <header class="auth-header">
         <h1 style="font-size: 32px; margin-bottom: 8px;">Добро пожаловать</h1>
-        <p style="color: var(--text-muted);">Войдите или создайте аккаунт для записи</p>
+        <p style="color: var(--text-muted);">Войдите в аккаунт</p>
     </header>
     
     <nav class="auth-tabs">
         <a href="/login/" class="auth-tab active">Вход</a>
         <a href="/register/" class="auth-tab">Регистрация</a>
     </nav>
-    <!-- поля заполн -->
+    
     <section class="form-card">
         <form method="post">
             {% csrf_token %}

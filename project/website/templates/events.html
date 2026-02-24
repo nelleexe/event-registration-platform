@@ -3,7 +3,9 @@
 {% load static %}
 
 {% block content %}
-
+{% if not events %}
+<h2 class="message">Сейчас, к сожалению, нет информации о мероприятиях</h2>
+{% else %}
 <section id="events">
     {% for event in events %}
     <article id='event-{{ event.id }}' class="event">
@@ -12,5 +14,5 @@
     </article>
     {% endfor %}
 </section>
-
+{% endif %}
 {% endblock %}

@@ -5,15 +5,6 @@ from django.contrib import messages
 from .models import *
 
 
-
-def login_required(view):
-    def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return view(request, *args, **kwargs)
-        else:
-            return redirect('/login/')
-    return wrapper
-
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -52,6 +43,14 @@ def register_view(request):
 
     return render(request, 'registration/register.html', data)
 
+def login_required(view):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return view(request, *args, **kwargs)
+        else:
+            return redirect('/login/')
+    return wrapper
+
 @login_required
 def logout_view(request):
     logout(request)
@@ -78,9 +77,7 @@ def profile_view(request):
     else:
         form = ProfileForm(instance=user)
     
-
     return render(request, "profile.html", {'form': form, 'user_obj': user})
-
 
 @login_required
 def events_view(request):

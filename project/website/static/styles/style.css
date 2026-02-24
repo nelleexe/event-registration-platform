@@ -23,6 +23,10 @@ body {
   color: var(--text);
   background-color: #fcfdfe;
   line-height: 1.5;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content auto min-content;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -211,6 +215,12 @@ header nav a.active::after {
 .btn-primary:hover {
   filter: brightness(1.1);
   transform: translateY(-1px);
+}
+
+.message {
+  padding: 2em;
+  text-align: center;
+  color: var(--text);
 }
 
 /* карточки */

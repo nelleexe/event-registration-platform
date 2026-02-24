@@ -4,7 +4,9 @@
 {% load event_filters %}
 
 {% block content %}
-
+{% if not clubs %}
+<h2 class="message">Сейчас, к сожалению, нет информации о кружках</h2>
+{% else %}
 <section id="clubs">
     {% for club in clubs %}
     <article id='club-{{ club.id }}' class="club">
@@ -18,6 +20,6 @@
     </article>
     {% endfor %}
 </section>
-
+{% endif %}
 {% endblock %}
 
