@@ -15,6 +15,7 @@
     </article>
     <article id='club-{{ club.id }}-more-info'> 
         <h2>{{ club.name }}</h2>
+        <h3>Руководитель: {{ club.supervisor }}</h3>
         <p>{{ club.description }}</p>
         <p>Участников: {{ club|get_members_count }} из {{ club.capacity }}</p>
     </article>

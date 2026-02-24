@@ -3,6 +3,7 @@ from .forms import *
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from .models import *
+from django.http import HttpResponseForbidden
 
 
 # Create your views here.
@@ -81,10 +82,19 @@ def profile_view(request):
 
 @login_required
 def events_view(request):
+    if request.method == 'POST':
+        user = request.user
+        event_id = request.POST.get('event-id')
+        try:
+            event = Event.objects.get(id=event_id)
+            EventMember(user=user, event=event).save()
+        except:
+            return HttpResponseForbidden('Не удалось записаться на мероприятие')
     data = {
         'events': Event.objects.all(),
         'shedule': Schedule.objects.all()
     }
+    
     return render(request, 'events.html', data)
 
 @login_required
@@ -95,3 +105,5 @@ def clubs_view(request):
 
     }
     return render(request, 'clubs.html', data)
+
+
