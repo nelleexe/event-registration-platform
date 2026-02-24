@@ -18,6 +18,20 @@
         <h3>Руководитель: {{ club.supervisor }}</h3>
         <p>{{ club.description }}</p>
         <p>Участников: {{ club|get_members_count }} из {{ club.capacity }}</p>
+        {% if user not in club|get_members %}
+            {% if club|get_members_count < club.capacity %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="club-id" value="{{ club.id }}">
+                <button type="submit">Записаться</button>
+            </form>
+            {% else %}
+            <p>К сожалению, на данный момент, свободных мест нет</p>
+            {% endif %}
+        {% else %}
+        <p>Вы являетесь участником!</p>
+        <a href="/profile/">Отменить запись в профиле</a>
+        {% endif %}
     </article>
     {% endfor %}
 </section>

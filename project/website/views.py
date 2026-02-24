@@ -93,13 +93,30 @@ def events_view(request):
             return HttpResponseForbidden('Не удалось записаться на мероприятие')
 
     data = {
-        'events': Event.objects.all(),
+        'events': Event.objects.all(), #FIX THIS LATER
         'shedule': Schedule.objects.all()
     }
     return render(request, 'events.html', data)
 
 @login_required
 def clubs_view(request):
+    if request.method == 'POST':
+        user = request.user
+        club_id = request.POST.get('club-id')
+        try:
+            club = Event.objects.get(id=club_id)
+            members = [enrollment.user for enrollment in EventMember.objects.filter(event=club)]
+            if user not in members:
+                if len(members) < club.capacity:
+                    EventMember(user=user, event=club).save()
+                    return redirect('/profile/')
+                else:
+                    return HttpResponseForbidden('К сожалению, в момент отправки запроса, в кружке уже было максимальное число участников')
+            else:
+                return HttpResponseForbidden('Вы уже являетесь участником данного кружка')
+        except:
+            return HttpResponseForbidden('Не удалось записаться в кружок')
+        
     data = {
         'clubs': Club.objects.all(),
         'shedule': Schedule.objects.all()
