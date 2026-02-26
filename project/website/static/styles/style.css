@@ -218,7 +218,7 @@ header nav a.active::after {
 }
 
 .message {
-  padding: 2em;
+  padding: 24px;
   text-align: center;
   color: var(--text);
 }
@@ -697,4 +697,22 @@ main.container > a:hover {
   #profileForm button {
     width: 100%;
   }
+}
+
+*[data-fancybox] {
+  cursor: pointer !important;
+}
+
+.modal {
+  display: none;
+  flex-direction: column;
+  max-width: 640px;
+}
+
+#clubs,
+#events {
+  padding: 24px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
 }

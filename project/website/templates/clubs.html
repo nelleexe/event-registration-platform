@@ -9,11 +9,13 @@
 {% else %}
 <section id="clubs">
     {% for club in clubs %}
-    <article id='club-{{ club.id }}' class="club">
+    <article data-fancybox href="#club-{{ club.id }}-more-info" id='club-{{ club.id }}' class="club">
+        {% if club.logo %}
         <img src="/media/{{ club.logo }}" alt="">
+        {% endif %}
         <h2>{{ club.name }}</h2>
     </article>
-    <article id='club-{{ club.id }}-more-info'> 
+    <article id='club-{{ club.id }}-more-info' class="modal">
         <h2>{{ club.name }}</h2>
         <h3>Руководитель: {{ club.supervisor }}</h3>
         <p>{{ club.description }}</p>

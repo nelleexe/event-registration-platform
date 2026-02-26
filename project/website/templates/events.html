@@ -9,11 +9,13 @@
 {% else %}
 <section id="events">
     {% for event in events %}
-    <article id='event-{{ event.id }}' class="event">
+    <article data-fancybox href="#event-{{ event.id }}-more-info" id='event-{{ event.id }}' class="event">
+        {% if event.logo %}
         <img src="/media/{{ event.logo }}" alt="">
+        {% endif %}
         <h2>{{ event.name }}</h2>
     </article>
-    <article id='event-{{ event.id }}-more-info'> 
+    <article id='event-{{ event.id }}-more-info' class="modal">
         <h2>{{ event.name }}</h2>
         <p>{{ event.description }}</p>
         <p>Участников: {{ event|get_members_count }} из {{ event.capacity }}</p>

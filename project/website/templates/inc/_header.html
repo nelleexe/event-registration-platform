@@ -6,15 +6,18 @@
         </a>
         <nav>
             <ul>
-                <li><a href="/" {% if request.path == "/"  %}class="active"{% endif %}>Главная</a></li>
+                <li><a href="/" {% if request.path == "/" %}class="active"{% endif %}>Главная</a></li>
                 {% if not user.is_authenticated %}
-                <li><a href="/login/" {% if request.path == "/login/"  %}class="active"{% endif %}>Вход</a></li>
-                <li><a href="/register/" {% if request.path == "/register/"  %}class="active"{% endif %}>Регистрация</a></li>
+                <li><a href="/login/" {% if request.path == "/login/" %}class="active"{% endif %}>Вход</a></li>
+                <li><a href="/register/" {% if request.path == "/register/" %}class="active"{% endif %}>Регистрация</a></li>
                 {% else %}
-                <li><a href="/events/" {% if request.path == "/events/"  %}class="active"{% endif %}>Мероприятия</a></li>
-                <li><a href="/clubs/" {% if request.path == "/clubs/"  %}class="active"{% endif %}>Кружки</a></li>
-                <li><a href="/profile/" {% if request.path == "/profile/"  %}class="active"{% endif %}>Профиль</a></li>
-                <li><a href="/logout/" {% if request.path == "/logout/"  %}class="active"{% endif %}>Выход</a></li>
+                <li><a href="/events/" {% if request.path == "/events/" %}class="active"{% endif %}>Мероприятия</a></li>
+                <li><a href="/clubs/" {% if request.path == "/clubs/" %}class="active"{% endif %}>Кружки</a></li>
+                <li><a href="/profile/" {% if request.path == "/profile/" %}class="active"{% endif %}>Профиль</a></li>
+                {% if user.is_superuser %}
+                <li><a href="/admin/">Админ-панель</a></li>
+                {% endif %}
+                <li><a href="/logout/" {% if request.path == "/logout/" %}class="active"{% endif %}>Выход</a></li>
                 {% endif %}
             </ul>
         </nav>

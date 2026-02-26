@@ -7,14 +7,39 @@
     <title>Академия юных талантов</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.20/dist/sweetalert2.min.css">
 </head>
 <body>
     {% include 'inc/_header.html' %}
     <main class='container'>
-        {% block content %} 
+        {% block content %}
         {% endblock %}
     </main>
     {% include 'inc/_footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
+    <script>Fancybox.bind("[data-fancybox]", {});</script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.20/dist/sweetalert2.all.min.js"></script>
+    <script>
+    function showAlert(title, text, icon) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            confirmButtonText: 'OK'
+        });
+    }
+    let localizedMessages = {
+        'success': 'Успех',
+        'error': 'Ошибка',
+        'warning': 'Предупреждение',
+        'info': 'Информация'
+    };
+    {% if messages %}
+        {% for message in messages %}
+            showAlert(localizedMessages["{{ message.tags }}"] || "{{ message.tags|capfirst }}", "{{ message }}", "{{ message.tags }}");
+        {% endfor %}
+    {% endif %}
+    </script>
 </body>
 </html>
