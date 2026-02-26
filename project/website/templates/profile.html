@@ -20,7 +20,7 @@
             <label for="photoInput" class="btn btn-primary file-btn">
             <input id="photoInput" type="file" name="photo" accept="image/*" hidden>Изменить фото</label>
             {% if user_obj.photo %}
-            <button type="button" class="btn file-btn-secondary">Удалить фото</button>
+            <button type="button" class="btn file-btn-secondary" onclick="removePhoto()">Удалить фото</button>
             {% endif %}
         </div>
     </div>
@@ -73,6 +73,18 @@ function setDisabled(state) {
     catch {}
 }
 
+function removePhoto() {
+    if (photoDeleteButton[0].classList.contains('disabled')) return;
+    showConfirmation('Вы уверены, что хотите удалить фото?', 'Фото будет удалено без возможности восстановления', () => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'remove_photo';
+        input.value = '1';
+        form.appendChild(input);
+        form.submit();
+    });
+}
+
 setDisabled(true);
 
 editBtn.addEventListener('click', () => {
@@ -87,16 +99,34 @@ editBtn.addEventListener('click', () => {
 });
 
 cancelBtn.addEventListener('click', () => {
-    location.reload();
+    setDisabled(true);
+
+    const emailInput = form.querySelector('input[type="email"]');
+    if (emailInput) emailInput.readOnly = true;
+
+    editBtn.style.display = 'inline';
+    saveBtn.style.display = 'none';
+    cancelBtn.style.display = 'none';
+
+    // Сброс превью к исходному состоянию
+    {% if user_obj.photo %}
+    avatarPreview.src = "{{ user_obj.photo.url }}";
+    {% else %}
+    avatarPreview.src = "{% static 'images/default_avatar.jpg' %}";
+    {% endif %}
+
+    // Удаление выбранного файла
+    photoInput.value = '';
 });
 
 photoInput.addEventListener('change', function () {
-    const file = this.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = e => avatarPreview.src = e.target.result;
-    reader.readAsDataURL(file);
+    if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            avatarPreview.src = e.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+    }
 });
 </script>
 {% endblock %}

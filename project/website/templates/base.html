@@ -29,6 +29,20 @@
             confirmButtonText: 'OK'
         });
     }
+    function showConfirmation(title, text, confirmCallback) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Да',
+            cancelButtonText: 'Нет'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                confirmCallback();
+            }
+        });
+    }
     let localizedMessages = {
         'success': 'Успех',
         'error': 'Ошибка',
