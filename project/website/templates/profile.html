@@ -3,53 +3,110 @@
 {% load static %}
 
 {% block content %}
-<form id="profileForm" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+<div class="profile-layout">
 
-    <div>
-        <h3>Фото профиля</h3>
+    <div class="profile-left">
+        <form id="profileForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        {% if user_obj.photo %}
-        <img id="avatarPreview" src="{{ user_obj.photo.url }}" alt="Фото пользователя" width="150">
-        {% else %}
-        <img id="avatarPreview" src="{% static 'images/default_avatar.jpg' %}" alt="Фото пользователя" width="150">
-        {% endif %}
-        <br><br>
+            <div>
+                <h3>Фото профиля</h3>
 
-        <div class="photo-actions">
-            <label for="photoInput" class="btn btn-primary file-btn">
-            <input id="photoInput" type="file" name="photo" accept="image/*" hidden>Изменить фото</label>
-            {% if user_obj.photo %}
-            <button type="button" class="btn file-btn-secondary" onclick="removePhoto()">Удалить фото</button>
-            {% endif %}
+                {% if user_obj.photo %}
+                <img id="avatarPreview" src="{{ user_obj.photo.url }}" width="150">
+                {% else %}
+                <img id="avatarPreview" src="{% static 'images/default_avatar.jpg' %}" width="150">
+                {% endif %}
+
+                <div class="photo-actions">
+                    <label for="photoInput" class="btn btn-primary file-btn">
+                        <input id="photoInput" type="file" name="photo" accept="image/*" hidden>
+                        Изменить фото
+                    </label>
+
+                    {% if user_obj.photo %}
+                    <button type="button" class="btn file-btn-secondary" onclick="removePhoto()">
+                        Удалить фото
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr>
+
+            <div>
+                <label>Фамилия:</label>
+                {{ form.surname }}
+
+                <label>Имя:</label>
+                {{ form.name }}
+
+                <label>Отчество:</label>
+                {{ form.patronymic }}
+
+                <label>Телефон:</label>
+                {{ form.phone }}
+
+                <label>Email:</label>
+                {{ form.email }}
+            </div>
+
+            <div>
+                <button type="button" id="editBtn">Редактировать</button>
+                <button type="submit" id="saveBtn" style="display:none;">Сохранить</button>
+                <button type="button" id="cancelBtn" style="display:none;">Отменить</button>
+                <a href="/password_change/">Сменить пароль</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="profile-right">
+        <div class="profile-section">
+            <h2>Мои мероприятия</h2>
+            <section id="events">
+                {% for event in events %}
+                <article data-fancybox href="#event-{{ event.id }}-more-info" id='event-{{ event.id }}' class="event">
+                    {% if event.logo %}
+                    <img src="/media/{{ event.logo }}" alt="">
+                    {% endif %}
+                    <h2>{{ event.name }}</h2>
+                </article>
+                <article id='event-{{ event.id }}-more-info' class="modal">
+                    <button class="modal-close" data-fancybox-close>&times;</button>
+                    <h2>{{ event.name }}</h2>
+                    <p>{{ event.description }}</p>
+                    <p>Вы являетесь участником!</p>
+                    <a href="/profile/">Отменить запись в профиле</a>
+                </article>
+                {% endfor %}
+            </section>
+        </div>
+        <div class="profile-section">
+            <h2>Мои кружки</h2>
+            <section id="clubs">
+                {% for club in clubs %}
+                <article data-fancybox href="#club-{{ club.id }}-more-info" id='club-{{ club.id }}' class="club">
+                    {% if club.logo %}
+                    <img src="/media/{{ club.logo }}" alt="">
+                    {% endif %}
+                    <h2>{{ club.name }}</h2>
+                </article>
+                <article id='club-{{ club.id }}-more-info' class="modal">
+                    <button class="modal-close" data-fancybox-close>&times;</button>
+                    <h2>{{ club.name }}</h2>
+                    <h3>Руководитель: {{ club.supervisor }}</h3>
+                    <p>{{ club.description }}</p>
+                    <p>Вы являетесь участником!</p>
+                    <a href="/profile/">Отменить запись в профиле</a>
+                </article>
+                {% endfor %}
+            </section>
         </div>
     </div>
 
-    <hr>
+</div>
 
-    <div>
-        <label>Фамилия:</label>
-        {{ form.surname }}<br><br>
 
-        <label>Имя:</label>
-        {{ form.name }}<br><br>
-
-        <label>Отчество:</label>
-        {{ form.patronymic }}<br><br>
-
-        <label>Телефон:</label>
-        {{ form.phone }}<br><br>
-
-        <label>Email:</label>
-        {{ form.email }}<br><br>
-    </div>
-
-    <div>
-        <button type="button" id="editBtn">Редактировать</button>
-        <button type="submit" id="saveBtn" style="display:none;">Сохранить</button>
-        <button type="button" id="cancelBtn" style="display:none;">Отменить</button>
-        <a href="/password_change/" type="button" id="editBtn">Сменить пароль</a>
-    </div>
 </form>
 
 <script>
