@@ -100,7 +100,7 @@ def profile_view(request):
 @login_required
 def events_view(request):
     data = {
-        'events': [event for event in Event.objects.all() if event.id not in [club.id for club in Club.objects.all()]],
+        'events': Event.objects.filter(club__isnull=True),
         'shedule': Schedule.objects.all()
     }
     if request.method == 'POST':

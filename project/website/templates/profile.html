@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load event_filters %}
+{% load user_filters %}
 
 {% block content %}
 <div class="profile-layout">
@@ -64,7 +66,7 @@
         <div class="profile-section">
             <h2>Мои мероприятия</h2>
             <section id="events">
-                {% for event in events %}
+                {% for event in user_obj|get_user_events %}
                 <article data-fancybox href="#event-{{ event.id }}-more-info" id='event-{{ event.id }}' class="event">
                     {% if event.logo %}
                     <img src="/media/{{ event.logo }}" alt="">
@@ -75,8 +77,21 @@
                     <button class="modal-close" data-fancybox-close>&times;</button>
                     <h2>{{ event.name }}</h2>
                     <p>{{ event.description }}</p>
+                    <p>Участников: {{ event|get_members_count }} из {{ event.capacity }}</p>
+                    {% if user not in event|get_members %}
+                        {% if event|get_members_count < event.capacity %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="event-id" value="{{ event.id }}">
+                            <button type="submit">Записаться</button>
+                        </form>
+                        {% else %}
+                        <p>К сожалению, на данный момент, свободных мест нет</p>
+                        {% endif %}
+                    {% else %}
                     <p>Вы являетесь участником!</p>
                     <a href="/profile/">Отменить запись в профиле</a>
+                    {% endif %}
                 </article>
                 {% endfor %}
             </section>
@@ -84,7 +99,7 @@
         <div class="profile-section">
             <h2>Мои кружки</h2>
             <section id="clubs">
-                {% for club in clubs %}
+                {% for club in user_obj|get_user_clubs %}
                 <article data-fancybox href="#club-{{ club.id }}-more-info" id='club-{{ club.id }}' class="club">
                     {% if club.logo %}
                     <img src="/media/{{ club.logo }}" alt="">
@@ -96,8 +111,21 @@
                     <h2>{{ club.name }}</h2>
                     <h3>Руководитель: {{ club.supervisor }}</h3>
                     <p>{{ club.description }}</p>
+                    <p>Участников: {{ club|get_members_count }} из {{ club.capacity }}</p>
+                    {% if user not in club|get_members %}
+                        {% if club|get_members_count < club.capacity %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="club-id" value="{{ club.id }}">
+                            <button type="submit">Записаться</button>
+                        </form>
+                        {% else %}
+                        <p>К сожалению, на данный момент, свободных мест нет</p>
+                        {% endif %}
+                    {% else %}
                     <p>Вы являетесь участником!</p>
                     <a href="/profile/">Отменить запись в профиле</a>
+                    {% endif %}
                 </article>
                 {% endfor %}
             </section>
