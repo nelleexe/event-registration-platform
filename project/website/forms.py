@@ -31,8 +31,9 @@ class CustomUserCreationForm(UserCreationForm):
     
     class Meta:
         model = CustomUser
-        fields = ('surname', 'name', 'patronymic', 'phone', 'email')
+        fields = ('role', 'surname', 'name', 'patronymic', 'phone', 'email')
         labels = {
+            'role': _('Роль'),
             'surname': _('Фамилия'),
             'name': _('Имя'),
             'patronymic': _('Отчество'),

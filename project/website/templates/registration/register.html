@@ -17,6 +17,13 @@
         <form method="post">
             {% csrf_token %}
             <article class="form-group">
+                <label for="id_role">Роль:</label>
+                <select name="role" id="id_role">
+                    <option selected value="student">Учащийся</option>
+                    <option value="parent">Родитель</option>
+                    <option value="organizer">Организатор</option>
+                </select>
+            <article class="form-group">
                 <label for="id_surname">Фамилия:</label>
                 <input type="text" name="surname" autocapitalize="on" autocomplete="surname" maxlength="200" placeholder="Введите Вашу фамилию" required="" id="id_surname">
             </article>

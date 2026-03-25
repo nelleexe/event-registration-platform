@@ -20,13 +20,20 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)  
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    surname = models.CharField('Фамилия', max_length=200)
-    name = models.CharField('Имя', max_length=200)
-    patronymic = models.CharField('Отчество', max_length=200)
+    ROLES = [
+        ('student', 'Учащийся'),
+        ('parent', 'Родитель'),
+        ('organizer', 'Организатор')
+    ]
+
+    role = models.CharField('Роль', max_length=63, choices=ROLES, default='student')
+    surname = models.CharField('Фамилия', max_length=63)
+    name = models.CharField('Имя', max_length=63)
+    patronymic = models.CharField('Отчество', max_length=63)
     phone = models.CharField('Номер телефона', unique=True)
     email = models.EmailField('Электронная почта', unique=True)
     photo = models.ImageField('Фотография', upload_to="users/", blank=True, null=True)
-
+    
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -34,7 +41,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['surname', 'name', 'patronymic', 'phone']
+    REQUIRED_FIELDS = ['role', 'surname', 'name', 'patronymic', 'phone']
 
     def str(self):
         return f"{self.surname} {self.name} {self.patronymic}"
