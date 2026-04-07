@@ -12,7 +12,7 @@
             {% csrf_token %}
 
             <div>
-                <h3>Фото профиля</h3>
+                <h3>{{ user_obj|get_role }}</h3>
 
                 {% if user_obj.photo %}
                 <img id="avatarPreview" src="{{ user_obj.photo.url }}" width="150">
@@ -66,6 +66,7 @@
         <div class="profile-section">
             <h2>Мои мероприятия</h2>
             <section id="events">
+                {% if user_obj|get_user_events %}
                 {% for event in user_obj|get_user_events %}
                 <article data-fancybox href="#event-{{ event.id }}-more-info" id='event-{{ event.id }}' class="event">
                     {% if event.logo %}
@@ -94,11 +95,15 @@
                     {% endif %}
                 </article>
                 {% endfor %}
+                {% else %}
+                <p>У Вас пока нет мероприятий</p>
+                {% endif %}
             </section>
         </div>
         <div class="profile-section">
             <h2>Мои кружки</h2>
             <section id="clubs">
+                {% if user_obj|get_user_clubs %}
                 {% for club in user_obj|get_user_clubs %}
                 <article data-fancybox href="#club-{{ club.id }}-more-info" id='club-{{ club.id }}' class="club">
                     {% if club.logo %}
@@ -128,6 +133,9 @@
                     {% endif %}
                 </article>
                 {% endfor %}
+                {% else %}
+                <p>Вы пока не записаны в кружки</p>
+                {% endif %}
             </section>
         </div>
     </div>
