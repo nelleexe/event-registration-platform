@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, password_validation
 from django.contrib import messages
 from .models import *
 from django.http import HttpResponseForbidden
+from datetime import datetime as dt
 
 
 # Create your views here.
@@ -186,8 +187,25 @@ def create_view(request):
         if form.is_valid():
             event = form.save(commit=False)
             event.organizer = request.user
-            event.save()
+            try:
+                schedule = Schedule()
+                schedule.event = event
+                print(schedule.event, end='\n\n---------------\n\n')
+                schedule.specific_date = request.POST['date']
+                schedule.start_time = request.POST['start_time']
+                schedule.finish_time = request.POST['finish_time'] if request.POST['finish_time'] else None
+                schedule.weekday = WeekDay.objects.get(id=dt.weekday(dt.strptime(schedule.specific_date, '%Y-%m-%d').date()))
+                print(schedule.weekday)
+                schedule.place = request.POST['place']
+            except:
+                messages.error(request, 'Неверная дата или время события')
+                data = {
+                    'form': form
+                }
+                return render(request, 'create.html', data)
             messages.success(request, 'Мероприятие успешно добавлено')
+            event.save()
+            schedule.save()
         else:
             messages.error(request, 'Неверные данные мероприятия')
     data = {
@@ -204,4 +222,6 @@ def create_view(request):
 Добавить связь родителя и ребёнка через систему заявок;
 Сделать систему оповещений;
 Чаты по мероприятиям.
+Проверка роли при регистрации
+Добавить невозможность поставить прошедшее число в создание мероприятия
 '''

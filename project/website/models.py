@@ -77,8 +77,9 @@ class Event(models.Model):
 class Schedule(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name='Событие')
     weekday = models.ForeignKey(WeekDay, on_delete=models.PROTECT, verbose_name='День недели')
+    specific_date = models.DateField('Дата проведения', blank=True, null=True)
     start_time = models.TimeField('Время начала')
-    finish_time = models.TimeField('Время конца')
+    finish_time = models.TimeField('Время конца', blank=True, null=True)
     place = models.CharField('Место проведения')
 
     def __str__(self):

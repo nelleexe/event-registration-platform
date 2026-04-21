@@ -6,6 +6,10 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <input type="date" name="date" required>
+    <input type="time" name="start_time" required>
+    <input type="time" name="finish_time">
+    <input type="text" name="place" placeholder="Введите место проведения" required>
     <button type="submit">Создать</button>
 </form>
 
