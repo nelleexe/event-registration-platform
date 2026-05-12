@@ -67,3 +67,15 @@ class EventCreationForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'type': 'date'}),
             'start_time': forms.TimeInput(attrs={'type': 'time'})
         }
+
+class ClubCreationForm(forms.ModelForm):
+    class Meta:
+        model = Club
+        fields = ('name', 'description', 'capacity', 'logo', 'supervisor')
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Введите название мероприятия'}),
+            'description': forms.Textarea(attrs={'placeholder': 'Введите описание мероприятия'}),
+            'capacity': forms.NumberInput(attrs={'placeholder': 'Введите максимальное число участников', 'min': '0'}),
+            'logo': forms.ClearableFileInput(),
+            'supervisor': forms.Select(attrs={'class': 'form-control'})
+        }

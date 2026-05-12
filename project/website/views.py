@@ -186,7 +186,8 @@ def create_view(request):
         else:
             messages.error(request, 'Неверные данные мероприятия')
     data = {
-        'form': form
+        'form': form,
+        'club_form': ClubCreationForm()
     }
     return render(request, 'create.html', data)
     

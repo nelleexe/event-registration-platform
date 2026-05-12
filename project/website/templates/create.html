@@ -6,6 +6,11 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Создать</button>
+    <button type="submit">Создать мероприятие</button>
+</form>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ club_form.as_p }}
+    <button type="submit">Создать кружок</button>
 </form>
 {% endblock %}
