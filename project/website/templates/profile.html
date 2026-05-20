@@ -63,19 +63,38 @@
     </div>
 
     <div class="profile-right">
+
         {% if user_obj.role == "organizer" %}
-        <div class="profile-section">
-            <h2>Созданные мероприятия</h2>
-            <section id="events">
+        <section class="profile-group profile-group-created">
+            <div class="profile-group-header">
+            <span class="profile-group-badge">Организатор</span>
+            <h2>Создано вами</h2>
+            <p>Здесь находятся мероприятия и кружки, которые вы создали сами.</p>
+            </div>
+
+            <div class="profile-subsection">
+            <div class="profile-subsection-title">
+                <h3>Созданные мероприятия</h3>
+            </div>
+
+            <div class="profile-items">
                 {% if user_obj|get_organized_events %}
                 {% for event in user_obj|get_organized_events %}
-                <article data-fancybox href="#created-event-{{ event.id }}-more-info" id='created-event-{{ event.id }}' class="event">
+                <article data-fancybox href="#created-event-{{ event.id }}-more-info" class="profile-item-card event-card">
+                    <div class="profile-item-image">
                     {% if event.logo %}
                     <img src="/media/{{ event.logo }}" alt="">
                     {% endif %}
-                    <h2>{{ event.name }}</h2>
+                    </div>
+
+                    <div class="profile-item-content">
+                    <span class="profile-item-type">Мероприятие</span>
+                    <h4>{{ event.name }}</h4>
+                    <p>Участников: {{ event|get_members_count }} из {{ event.capacity }}</p>
+                    </div>
                 </article>
-                <article id='created-event-{{ event.id }}-more-info' class="modal">
+
+                <article id="created-event-{{ event.id }}-more-info" class="modal">
                     <button class="modal-close" data-fancybox-close>&times;</button>
                     <h2>{{ event.name }}</h2>
                     <p>{{ event.description }}</p>
@@ -83,22 +102,34 @@
                 </article>
                 {% endfor %}
                 {% else %}
-                <p>Пока что не создал ни одного мероприятия</p>
+                <p class="profile-empty">Пока что не создано ни одного мероприятия</p>
                 {% endif %}
-            </section>
-        </div>
-        <div class="profile-section">
-            <h2>Созданные кружки</h2>
-            <section id="clubs">
+            </div>
+            </div>
+
+            <div class="profile-subsection">
+            <div class="profile-subsection-title">
+                <h3>Созданные кружки</h3>
+            </div>
+
+            <div class="profile-items">
                 {% if user_obj|get_organized_clubs %}
                 {% for club in user_obj|get_organized_clubs %}
-                <article data-fancybox href="#created-club-{{ club.id }}-more-info" id='created-club-{{ club.id }}' class="club">
+                <article data-fancybox href="#created-club-{{ club.id }}-more-info" class="profile-item-card club-card">
+                    <div class="profile-item-image">
                     {% if club.logo %}
                     <img src="/media/{{ club.logo }}" alt="">
                     {% endif %}
-                    <h2>{{ club.name }}</h2>
+                    </div>
+
+                    <div class="profile-item-content">
+                    <span class="profile-item-type">Кружок</span>
+                    <h4>{{ club.name }}</h4>
+                    <p>Участников: {{ club|get_members_count }} из {{ club.capacity }}</p>
+                    </div>
                 </article>
-                <article id='created-club-{{ club.id }}-more-info' class="modal">
+
+                <article id="created-club-{{ club.id }}-more-info" class="modal">
                     <button class="modal-close" data-fancybox-close>&times;</button>
                     <h2>{{ club.name }}</h2>
                     <h3>Руководитель: {{ club.supervisor }}</h3>
@@ -107,92 +138,100 @@
                 </article>
                 {% endfor %}
                 {% else %}
-                <p>Пока что не создал ни одного кружка</p>
+                <p class="profile-empty">Пока что не создано ни одного кружка</p>
                 {% endif %}
-            </section>
-        </div>
+            </div>
+            </div>
+        </section>
         {% endif %}
-        <div class="profile-section">
-            <h2>Мои мероприятия</h2>
-            <section id="events">
+
+        <section class="profile-group profile-group-joined">
+            <div class="profile-group-header">
+            <span class="profile-group-badge">Участник</span>
+            <h2>Вы записаны</h2>
+            <p>Здесь находятся мероприятия и кружки, на которые вы записались.</p>
+            </div>
+
+            <div class="profile-subsection">
+            <div class="profile-subsection-title">
+                <h3>Мои мероприятия</h3>
+            </div>
+
+            <div class="profile-items">
                 {% if user_obj|get_user_events %}
                 {% for event in user_obj|get_user_events %}
-                <article data-fancybox href="#event-{{ event.id }}-more-info" id='event-{{ event.id }}' class="event">
+                <article data-fancybox href="#event-{{ event.id }}-more-info" class="profile-item-card event-card joined-card">
+                    <div class="profile-item-image">
                     {% if event.logo %}
                     <img src="/media/{{ event.logo }}" alt="">
                     {% endif %}
-                    <h2>{{ event.name }}</h2>
+                    </div>
+
+                    <div class="profile-item-content">
+                    <span class="profile-item-type">Вы записаны</span>
+                    <h4>{{ event.name }}</h4>
+                    <p>Участников: {{ event|get_members_count }} из {{ event.capacity }}</p>
+                    </div>
                 </article>
-                <article id='event-{{ event.id }}-more-info' class="modal">
+
+                <article id="event-{{ event.id }}-more-info" class="modal">
                     <button class="modal-close" data-fancybox-close>&times;</button>
                     <h2>{{ event.name }}</h2>
                     <p>{{ event.description }}</p>
                     <p>Участников: {{ event|get_members_count }} из {{ event.capacity }}</p>
-                    {% if user not in event|get_members %}
-                        {% if event|get_members_count < event.capacity %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="event-id" value="{{ event.id }}">
-                            <button type="submit">Записаться</button>
-                        </form>
-                        {% else %}
-                        <p>К сожалению, на данный момент, свободных мест нет</p>
-                        {% endif %}
-                    {% else %}
-                    <p>Вы являетесь участником!</p>
-                    <a href="/unsubscribe/{{ event.id }}/?next={{ request.path }}">Отменить запись</a>
-                    {% endif %}
+                    <p class="profile-member-status">Вы являетесь участником!</p>
+                    <a class="profile-unsubscribe" href="/unsubscribe/{{ event.id }}/?next={{ request.path }}">Отменить запись</a>
                 </article>
                 {% endfor %}
                 {% else %}
-                <p>Пока нет мероприятий</p>
+                <p class="profile-empty">Вы пока не записаны ни на одно мероприятие</p>
                 {% endif %}
-            </section>
-        </div>
-        <div class="profile-section">
-            <h2>Мои кружки</h2>
-            <section id="clubs">
+            </div>
+            </div>
+
+            <div class="profile-subsection">
+            <div class="profile-subsection-title">
+                <h3>Мои кружки</h3>
+            </div>
+
+            <div class="profile-items">
                 {% if user_obj|get_user_clubs %}
                 {% for club in user_obj|get_user_clubs %}
-                <article data-fancybox href="#club-{{ club.id }}-more-info" id='club-{{ club.id }}' class="club">
+                <article data-fancybox href="#club-{{ club.id }}-more-info" class="profile-item-card club-card joined-card">
+                    <div class="profile-item-image">
                     {% if club.logo %}
                     <img src="/media/{{ club.logo }}" alt="">
                     {% endif %}
-                    <h2>{{ club.name }}</h2>
+                    </div>
+
+                    <div class="profile-item-content">
+                    <span class="profile-item-type">Вы записаны</span>
+                    <h4>{{ club.name }}</h4>
+                    <p>Участников: {{ club|get_members_count }} из {{ club.capacity }}</p>
+                    </div>
                 </article>
-                <article id='club-{{ club.id }}-more-info' class="modal">
+
+                <article id="club-{{ club.id }}-more-info" class="modal">
                     <button class="modal-close" data-fancybox-close>&times;</button>
                     <h2>{{ club.name }}</h2>
                     <h3>Руководитель: {{ club.supervisor }}</h3>
                     <p>{{ club.description }}</p>
                     <p>Участников: {{ club|get_members_count }} из {{ club.capacity }}</p>
-                    {% if user not in club|get_members %}
-                        {% if club|get_members_count < club.capacity %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="club-id" value="{{ club.id }}">
-                            <button type="submit">Записаться</button>
-                        </form>
-                        {% else %}
-                        <p>К сожалению, на данный момент, свободных мест нет</p>
-                        {% endif %}
-                    {% else %}
-                    <p>Вы являетесь участником!</p>
-                    <a href="/unsubscribe/{{ club.id }}/?next={{ request.path }}">Отменить запись</a>
-                    {% endif %}
+                    <p class="profile-member-status">Вы являетесь участником!</p>
+                    <a class="profile-unsubscribe" href="/unsubscribe/{{ club.id }}/?next={{ request.path }}">Отменить запись</a>
                 </article>
                 {% endfor %}
                 {% else %}
-                <p>Пока нет кружков</p>
+                <p class="profile-empty">Вы пока не записаны ни в один кружок</p>
                 {% endif %}
-            </section>
-        </div>
+            </div>
+            </div>
+        </section>
     </div>
 
 </div>
 
 
-</form>
 
 <script>
 const form = document.getElementById('profileForm');

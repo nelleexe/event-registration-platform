@@ -3,14 +3,94 @@
 {% load static %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Создать мероприятие</button>
-</form>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ club_form.as_p }}
-    <button type="submit">Создать кружок</button>
-</form>
+
+<section class="create-page">
+  <div class="create-hero">
+    <span class="create-badge">Панель организатора</span>
+    <h1>Создание</h1>
+    <p>Выберите, что хотите добавить на платформу: мероприятие или кружок.</p>
+  </div>
+
+  <div class="create-card">
+    <div class="create-switch" role="tablist" aria-label="Выбор типа создания">
+      <label class="create-switch__item">
+        <input
+          type="radio"
+          name="create-switch"
+          value="event"
+          {% if active_form != 'club' %}checked{% endif %}
+        >
+        <span>
+          <i class="fa-solid fa-calendar-days"></i>
+          Мероприятие
+        </span>
+      </label>
+
+      <label class="create-switch__item">
+        <input
+          type="radio"
+          name="create-switch"
+          value="club"
+          {% if active_form == 'club' %}checked{% endif %}
+        >
+        <span>
+          <i class="fa-solid fa-users"></i>
+          Кружок
+        </span>
+      </label>
+    </div>
+
+    <div class="create-panels">
+      <div class="create-panel {% if active_form != 'club' %}active{% endif %}" data-create-panel="event">
+        <div class="create-panel__header">
+          <h2>Новое мероприятие</h2>
+          <p>Заполните название, описание, количество участников, превью, дату и время.</p>
+        </div>
+
+        <form class="create-form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="creation_type" value="event">
+
+          {{ form.as_p }}
+
+          <button class="btn btn-primary create-submit" type="submit">
+            Создать мероприятие
+          </button>
+        </form>
+      </div>
+
+      <div class="create-panel {% if active_form == 'club' %}active{% endif %}" data-create-panel="club">
+        <div class="create-panel__header">
+          <h2>Новый кружок</h2>
+          <p>Заполните название, описание, вместимость, превью и руководителя кружка.</p>
+        </div>
+
+        <form class="create-form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="creation_type" value="club">
+
+          {{ club_form.as_p }}
+
+          <button class="btn btn-primary create-submit" type="submit">
+            Создать кружок
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const switchInputs = document.querySelectorAll('input[name="create-switch"]');
+  const panels = document.querySelectorAll('[data-create-panel]');
+
+  switchInputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      panels.forEach((panel) => {
+        panel.classList.toggle('active', panel.dataset.createPanel === input.value);
+      });
+    });
+  });
+</script>
+
 {% endblock %}

@@ -170,25 +170,54 @@ def clubs_view(request):
     return render(request, 'clubs.html', data)
 
 @login_required
+@login_required
+
 def create_view(request):
     user = request.user
+
     if user.role != 'organizer':
         messages.error(request, 'Вы не являетесь организатором')
         return redirect('/profile/')
+
     form = EventCreationForm()
+    club_form = ClubCreationForm()
+    active_form = 'event'
+
     if request.method == 'POST':
-        form = EventCreationForm(request.POST, request.FILES)
-        if form.is_valid():
-            event = form.save(commit=False)
-            event.organizer = request.user
-            event.save()
-            messages.success(request, 'Мероприятие успешно добавлено')
+        active_form = request.POST.get('creation_type', 'event')
+
+        if active_form == 'club':
+            club_form = ClubCreationForm(request.POST, request.FILES)
+
+            if club_form.is_valid():
+                club = club_form.save(commit=False)
+                club.organizer = request.user
+                club.save()
+
+                messages.success(request, 'Кружок успешно добавлен')
+                return redirect('/create/')
+            else:
+                messages.error(request, 'Неверные данные кружка')
+
         else:
-            messages.error(request, 'Неверные данные мероприятия')
+            form = EventCreationForm(request.POST, request.FILES)
+
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.organizer = request.user
+                event.save()
+
+                messages.success(request, 'Мероприятие успешно добавлено')
+                return redirect('/create/')
+            else:
+                messages.error(request, 'Неверные данные мероприятия')
+
     data = {
         'form': form,
-        'club_form': ClubCreationForm()
+        'club_form': club_form,
+        'active_form': active_form,
     }
+
     return render(request, 'create.html', data)
     
 
